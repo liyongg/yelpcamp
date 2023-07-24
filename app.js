@@ -8,7 +8,8 @@ const ExpressError = require('./utils/ExpressError');
 const globals = require('./globals');
 const methodOverride = require('method-override');
 const Campground = require('./models/campground');
-const Review = require("./models/review")
+const Review = require("./models/review");
+const review = require('./models/review');
 
 const dbConnection = globals.dbConnection;
 
@@ -73,7 +74,7 @@ app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) =
 }))
 
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id)
+    const campground = await Campground.findById(req.params.id).populate("reviews");
     res.render('campgrounds/show', { campground });
 }))
 
