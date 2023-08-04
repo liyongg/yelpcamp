@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 const Review = require('./review');
+const { array } = require('joi');
 const Schema = mongoose.Schema;
 
 const CampgoundSchema = new Schema({
     title: String,
-    image: String,
+    images: [
+        {
+            url: String,
+            filename: String
+        }
+    ],
     price: Number,
     description: String,
     location: String,
