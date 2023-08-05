@@ -21,23 +21,10 @@ db.once('open', () => {
 const sample = (array) => array[Math.floor(Math.random() * array.length)];
 
 // call unsplash and return small image
-async function seedImg() {
-    try {
-        const resp = await axios.get('https://api.unsplash.com/photos/random', {
-            params: {
-                client_id: globals.unsplashKey,
-                collections: 1114848,
-            },
-        })
-        return resp.data.urls.small
-    } catch (err) {
-        console.error(err)
-    }
-}
 
 async function seedDB() {
     await Campground.deleteMany({});
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 200; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 20) + 1;
         const camp = new Campground({
@@ -46,6 +33,13 @@ async function seedDB() {
             title: `${sample(descriptors)} ${sample(places)}`,
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Vel autem mollitia beatae sunt repellendus eaque, et laboriosam eius provident temporibus eligendi sapiente quos cupiditate a voluptatum nisi dicta ex suscipit!',
             price,
+            geometry: {
+                type: "Point",
+                coordinates: [
+                    cities[random1000].longitude,
+                    cities[random1000].latitude
+                ]
+            },
             images: [
                 {
                     url: 'https://res.cloudinary.com/dby55b4gg/image/upload/v1691140308/YelpCamp/qrveww7xz69ytzfqdqyk.jpg',
