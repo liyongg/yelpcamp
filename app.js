@@ -62,27 +62,11 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-const validateCampground = (req, res, next) => {
-    const { error } = campgroundSchema.validate(req.body);
-    if (error) {
-        const msg = error.details.map(el => el.message).join(',')
-        throw new ExpressError(msg, 400)
-    } else {
-        next();
-    }
-}
-
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     next();
-})
-
-app.get("/fakeUser", async (req, res) => {
-    const user = new User({ email: "mich@hotmail.com", username: "mich" });
-    const newUser = await User.register(user, "chicken");
-    res.send(newUser)
 })
 
 app.use("/", userRoutes)
@@ -97,8 +81,8 @@ app.all("*", (req, res, next) => {
     next(new ExpressError('Page Not Found', 404))
 })
 
-app.use((err, req, res, next) => {
-    const { statusCode = 500, message = "Something went wrong" } = err;
+app.use((err, req, res) => {
+    const { statusCode = 500 } = err;
     if (!err.message) err.message = "Oh No, Something Went Wrong!"
     res.status(statusCode).render('error', { err });
 })
