@@ -9,7 +9,6 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
-const globals = require('./globals');
 const methodOverride = require('method-override');
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -22,7 +21,8 @@ const userRoutes = require("./routes/users")
 const campgroundRoutes = require("./routes/campgrounds")
 const reviewRoutes = require("./routes/reviews")
 
-const dbConnection = globals.dbConnection;
+const dbConnection = process.env.DB_URL;
+const MongoStore = require("connect-mongo");
 
 mongoose.connect(dbConnection, {
     useNewUrlParser: true,
@@ -46,9 +46,19 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize())
 
+const secret = process.env.SECRET || "thisshouldbeabettersecret!"
+
+const store = new MongoStore({
+    mongoUrl: dbConnection,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: secret
+    }
+})
+
 const sessionConfig = {
     name: 'session',
-    secret: "thisshouldbeabettersecret!",
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
