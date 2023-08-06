@@ -22,6 +22,7 @@ const campgroundRoutes = require("./routes/campgrounds")
 const reviewRoutes = require("./routes/reviews")
 
 const dbConnection = process.env.DB_URL;
+const MongoStore = require("connect-mongo");
 
 mongoose.connect(dbConnection, {
     useNewUrlParser: true,
@@ -44,6 +45,14 @@ app.use(express.urlencoded({ extended: true }))
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize())
+
+const store = new MongoStore({
+    mongoUrl: dbConnection,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: "thisshouldbeabettersecret!"
+    }
+})
 
 const sessionConfig = {
     name: 'session',
