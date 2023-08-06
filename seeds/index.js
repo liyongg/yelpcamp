@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
-const globals = require('../globals');
 const cities = require('./cities');
 const { places, descriptors } = require('./seedHelpers');
 const Campground = require('../models/campground');
 const axios = require("axios");
 
-const dbConnection = globals.dbConnection;
+const dbConnection = process.env.DB_URL;
 
 mongoose.connect(dbConnection, {
     useNewUrlParser: true,
