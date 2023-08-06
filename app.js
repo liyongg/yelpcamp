@@ -84,6 +84,7 @@ const styleSrcUrls = [
     "https://kit-free.fontawesome.com/",
     "https://stackpath.bootstrapcdn.com/",
     "https://api.mapbox.com/",
+    "https://www.coindesk.com/",
     "https://api.tiles.mapbox.com/",
     "https://fonts.googleapis.com/",
     "https://use.fontawesome.com/",
@@ -111,6 +112,7 @@ app.use(
                 "data:",
                 "https://res.cloudinary.com/dby55b4gg/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
                 "https://images.unsplash.com/",
+                "https://www.coindesk.com/",
             ],
             fontSrc: ["'self'", ...fontSrcUrls],
         },
