@@ -9,7 +9,6 @@ const ejsMate = require('ejs-mate');
 const session = require('express-session');
 const flash = require('connect-flash');
 const ExpressError = require('./utils/ExpressError');
-const globals = require('./globals');
 const methodOverride = require('method-override');
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
@@ -22,7 +21,7 @@ const userRoutes = require("./routes/users")
 const campgroundRoutes = require("./routes/campgrounds")
 const reviewRoutes = require("./routes/reviews")
 
-const dbConnection = globals.dbConnection;
+const dbConnection = process.env.DB_URL;
 
 mongoose.connect(dbConnection, {
     useNewUrlParser: true,
