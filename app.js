@@ -46,17 +46,19 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(mongoSanitize())
 
+const secret = process.env.SECRET || "thisshouldbeabettersecret!"
+
 const store = new MongoStore({
     mongoUrl: dbConnection,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: "thisshouldbeabettersecret!"
+        secret: secret
     }
 })
 
 const sessionConfig = {
     name: 'session',
-    secret: "thisshouldbeabettersecret!",
+    secret: secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
